@@ -1,0 +1,68 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: monospace;
+    color: #cecece;
+    font-size: 30px;
+}
+
+body {
+    background: #050505;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+main {
+    width: 100%;
+    padding: 5%;
+}
+
+h1 {
+    font-size: 40px;
+    text-align: center;
+    margin: 1%;
+}
+
+section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#inputSection, .button-list {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#keySection {
+    flex-basis: 40%;
+}
+
+label {
+    font-size: 20px;
+}
+
+textarea, input {
+    width: 100%;
+    margin: 5% 0;
+    background-color: #000;
+    border: 1% solid #eee;
+    padding: 1%;
+    resize: none;
+}
+
+button {
+    padding: 1%;
+    width: 100%;
+}
+
+#encrypt { background: green; }
+#decrypt { background: red; }
+#plainTextClear { background: black; }
+#cipherTextClear { background: black; }

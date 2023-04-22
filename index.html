@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hill Cipher</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <main>
+        <h1>HILL ENCRYPTION</h1>
+        <section>
+            <div id="inputSection">
+                <div id="plainTextSection">
+                    <label for="plainText">Plain text:</label>
+                    <textarea id="plainText" pattern="^[a-zA-Z]+$" rows="3">HELLOWORLD</textarea>
+                    <div class="button-list">
+                        <button id="encrypt">Encrypt!</button>
+                        <button id="plainTextClear">Clear</button>
+                    </div>
+                </div>
+                <div id="keySection">
+                    <label for="key">Key:</label>
+                    <input type="text" name="key" id="key" pattern="^[a-zA-Z]+$" value="HELLOTHAY">
+                </div>
+                <div id="cipherTextSection">
+                    <label for="cipherText">Cipher text:</label>
+                    <textarea id="cipherText" pattern="^[a-zA-Z]+$" rows="3"></textarea>
+                    <div class="button-list">
+                        <button id="decrypt">Decrypt!</button>
+                        <button id="cipherTextClear">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let tempChar = "?";
+
+        document.querySelector("#encrypt").addEventListener("click", () => {
+            if (
+                document.querySelector("#plainText").value.length > 0 &&
+                document.querySelector("#key").value.length > 0
+            ) {
+                if ( Math.sqrt(document.querySelector("#key").value.length) != Math.round(Math.sqrt(document.querySelector("#key").value.length)) ) {
+                    document.querySelector("#cipherText").value = "Cannot encrypt this plain text using input key"
+                } else {
+                    let s = document.querySelector("#plainText").value;
+                    while (
+                        s.length % Math.sqrt(document.querySelector("#key").value.length) != 0
+                    ) {
+                        s += tempChar;
+                    }
+                    document.querySelector("#cipherText").value = encryptHill(
+                        s.toUpperCase(), 
+                        document.querySelector("#key").value.toUpperCase(), 
+                        1
+                    )
+                }
+            }
+        })
+
+        document.querySelector("#decrypt").addEventListener("click", () => {
+            if (
+                document.querySelector("#cipherText").value.length > 0 &&
+                document.querySelector("#key").value.length > 0
+            ) {
+                if (
+                    gcd(
+                        (
+                            LENGTH + getDet(
+                                stringToColumnMatrix(
+                                    document.querySelector("#key").value, 
+                                    Math.sqrt(
+                                        document.querySelector("#key").value.length
+                                    )
+                                )
+                            ) % LENGTH
+                        ) % LENGTH, 
+                        LENGTH
+                    ) != 1
+                ) {
+                    document.querySelector("#plainText").value = "Cannot decrypt this cipher text using input key";
+                } else {
+                    if (
+                        document.querySelector("#cipherText").value.length % 
+                        Math.sqrt(document.querySelector("#key").value.length) == 0
+                    ) {
+                        document.querySelector("#plainText").value = decryptHill(
+                            document.querySelector("#cipherText").value.toUpperCase(), 
+                            document.querySelector("#key").value.toUpperCase(), 
+                            1
+                        ).replace(new RegExp("\\" + tempChar + "+$", "g"), '');
+                    } else {
+                        document.querySelector("#plainText").value = "Cipher text is not valid";
+                    }
+                }
+            }
+        })
+
+        document.querySelector("#plainTextClear").addEventListener("click", () => {
+            document.querySelector("#plainText").value = "";
+        })
+        document.querySelector("#cipherTextClear").addEventListener("click", () => {
+            document.querySelector("#cipherText").value = "";
+        })
+    </script>
+</body>
+</html>
