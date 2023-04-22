@@ -16,7 +16,7 @@
             <div id="inputSection">
                 <div id="plainTextSection">
                     <label for="plainText">Plain text:</label>
-                    <textarea id="plainText" pattern="^[a-zA-Z]+$" rows="3">HELLOWORLD</textarea>
+                    <textarea id="plainText" pattern="^[a-zA-Z]+$" rows="5">HELLOWORLD</textarea>
                     <div class="button-list">
                         <button id="encrypt">Encrypt!</button>
                         <button id="plainTextClear">Clear</button>
@@ -25,10 +25,14 @@
                 <div id="keySection">
                     <label for="key">Key:</label>
                     <input type="text" name="key" id="key" pattern="^[a-zA-Z]+$" value="HELLOTHAY">
+                    <div id="advanceSettingButton">Advance Setting</div>
+                    <div id="advanceSetting">
+
+                    </div>
                 </div>
                 <div id="cipherTextSection">
                     <label for="cipherText">Cipher text:</label>
-                    <textarea id="cipherText" pattern="^[a-zA-Z]+$" rows="3"></textarea>
+                    <textarea id="cipherText" pattern="^[a-zA-Z]+$" rows="5"></textarea>
                     <div class="button-list">
                         <button id="decrypt">Decrypt!</button>
                         <button id="cipherTextClear">Clear</button>
@@ -56,7 +60,7 @@
                         s += tempChar;
                     }
                     document.querySelector("#cipherText").value = encryptHill(
-                        s.toUpperCase(), 
+                        s, 
                         document.querySelector("#key").value, 
                         1
                     )
