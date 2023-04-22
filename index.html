@@ -57,7 +57,7 @@
                     }
                     document.querySelector("#cipherText").value = encryptHill(
                         s.toUpperCase(), 
-                        document.querySelector("#key").value.toUpperCase(), 
+                        document.querySelector("#key").value, 
                         1
                     )
                 }
@@ -91,8 +91,8 @@
                         Math.sqrt(document.querySelector("#key").value.length) == 0
                     ) {
                         document.querySelector("#plainText").value = decryptHill(
-                            document.querySelector("#cipherText").value.toUpperCase(), 
-                            document.querySelector("#key").value.toUpperCase(), 
+                            document.querySelector("#cipherText").value, 
+                            document.querySelector("#key").value, 
                             1
                         ).replace(new RegExp("\\" + tempChar + "+$", "g"), '');
                     } else {
