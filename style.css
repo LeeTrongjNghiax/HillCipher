@@ -44,10 +44,10 @@ section {
     flex-basis: 40%;
 }
 
-#keySection:hover > #advanceSetting {
+/* #keySection:hover > #advanceSetting {
     height: 50vh;
-    /* transform: height 10s; */
-}
+    transform: height 10s;
+} */
 
 #advanceSetting {
     width: 100%;

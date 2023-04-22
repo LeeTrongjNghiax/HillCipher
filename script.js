@@ -3,13 +3,15 @@ const ALPHABET = [];
 for (let i = 65; i < 91; i++) 
     ALPHABET.push(String.fromCodePoint(i));
 
-ALPHABET.push(" ");
-ALPHABET.push("^");
+// ALPHABET.push(" ");
+// ALPHABET.push(".");
+// ALPHABET.push(",");
+
+const LENGTH = ALPHABET.length;
 
 console.log(ALPHABET);
-
-// const LENGTH = ALPHABET.length;
-const LENGTH = 1114111;
+console.log(LENGTH);
+// const LENGTH = 1114111;
 
 add = (a, b) => a + b;
 multi = (a, b) => a * b;
@@ -44,8 +46,9 @@ stringToColumnMatrix = (string, row, mode = 0) => {
         let k = index;
         m[i] = [];
         for (let j = 0; j < string.length / row; j++) {
-            if (mode == 0)
+            if (mode == 0) {
                 m[i][j] = ALPHABET.indexOf(string[k], 0);
+            }
             else
                 m[i][j] = string[k].codePointAt(0);
             k += row;
@@ -114,6 +117,8 @@ matrixMultiMatrix = (m1, m2) => {
     for (let i = 0; i < m1.length; i++) {
         m3[i] = []
     }
+
+    console.table(m2);
 
     for (let i = 0; i < m1.length; i++) {
         for (let j = 0; j < m2[0].length; j++) {
@@ -185,7 +190,7 @@ encryptHill = (p, k, mode = 0) => {
         numberBinaryMatrix(
             LENGTH, 
             matrixMultiMatrix(
-                stringToColumnMatrix(
+                stringToRowMatrix(
                     k, 
                     Math.sqrt(k.length), 
                     mode
@@ -198,7 +203,7 @@ encryptHill = (p, k, mode = 0) => {
             ), 
             mod2
         ), 
-        1
+        mode
     );
 }
 
@@ -212,7 +217,7 @@ decryptHill = (c, k, mode = 0) => rowMatrixToString(
                     numberBinaryMatrix( 
                         getBlindResult(
                             (LENGTH + getDet(
-                                stringToColumnMatrix(
+                                stringToRowMatrix(
                                     k, 
                                     Math.sqrt(k.length), 
                                     mode
@@ -224,7 +229,7 @@ decryptHill = (c, k, mode = 0) => rowMatrixToString(
                             LENGTH, 
                             transposeMatrix( 
                                 cofactorMatrix(
-                                    stringToColumnMatrix(
+                                    stringToRowMatrix(
                                         k, 
                                         Math.sqrt(k.length), 
                                         mode
