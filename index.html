@@ -73,6 +73,20 @@
                 document.querySelector("#cipherText").value.length > 0 &&
                 document.querySelector("#key").value.length > 0
             ) {
+                console.log(gcd(
+                        (
+                            LENGTH + getDet(
+                                stringToColumnMatrix(
+                                    document.querySelector("#key").value, 
+                                    Math.sqrt(
+                                        document.querySelector("#key").value.length
+                                    ), 
+                                    0
+                                )
+                            ) % LENGTH
+                        ) % LENGTH, 
+                        LENGTH
+                    ));
                 if (
                     gcd(
                         (
