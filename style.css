@@ -16,7 +16,8 @@ section,
 #cipherTextSection, 
 #advanceSetting, 
 #templateCharSection, 
-#alphabetSection {
+#alphabetSection, 
+#alphabetSection > div {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,18 +69,22 @@ h1 {
     transition: max-height 0.2s;
 }
 
-#templateCharSection, 
 #alphabetSection {
+    width: 100%;
+}
+
+#templateCharSection, 
+#alphabetSection > div {
     width: 90%;
 }
 
 #templateCharSection > label, 
-#alphabetSection > label {
+#alphabetSection div label {
     flex-basis: 90%;
 }
 
 #templateCharSection > input, 
-#alphabetSection > input {
+#alphabetSection div input {
     flex-basis: 10%;
 }
 
