@@ -38,7 +38,7 @@ isSquareNumber = num => {
     return false;
 }
 
-stringToColumnMatrix = (string, row, mode = 0) => {
+stringToColumnMatrix = (string, row, mode = 0, arr) => {
     let m = []; 
     let index = 0;
 
@@ -59,7 +59,7 @@ stringToColumnMatrix = (string, row, mode = 0) => {
     return m;
 }
 
-stringToRowMatrix = (string, col, mode = 0) => {
+stringToRowMatrix = (string, col, mode = 0, arr) => {
     let m = []; 
     let index = 0;
 
@@ -77,7 +77,7 @@ stringToRowMatrix = (string, col, mode = 0) => {
     return m;
 }
 
-rowMatrixToString = (matrix, mode = 0) => {
+rowMatrixToString = (matrix, mode = 0, arr) => {
     let s = '';
 
     for (let i = 0; i < matrix.length; i++) {
@@ -92,7 +92,7 @@ rowMatrixToString = (matrix, mode = 0) => {
     return s;
 }
 
-columnMatrixToString = (matrix, mode = 0) => {
+columnMatrixToString = (matrix, mode = 0, arr) => {
     let s = '';
     for (let i = 0; i < matrix[0].length; i++) {
         for (let j = 0; j < matrix.length; j++) {
@@ -152,6 +152,7 @@ smallerMatrix = (matrix, i, j) => {
             matrix2.push(rows);
         }
     })
+
     return matrix2;
 }
 
@@ -161,6 +162,7 @@ getDet = matrix => {
     for (let i = 0; i < matrix.length; i++) {
         sum += Math.pow(-1, 1 + (i + 1)) * matrix[0][i] * getDet(smallerMatrix(matrix, 0, i));
     }
+
     return sum;
 }
 
@@ -178,6 +180,7 @@ cofactorMatrix = matrix => {
 
 inversedMatrix = matrix => {
     if (getDet(matrix) == 0) return null;
+
     return numberBinaryMatrix(
         1 / getDet(matrix), 
         transposeMatrix( cofactorMatrix(matrix) ), 

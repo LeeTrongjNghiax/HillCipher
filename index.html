@@ -27,7 +27,21 @@
                     <input type="text" name="key" id="key" pattern="^[a-zA-Z]+$" value="DBGF">
                     <div id="advanceSettingButton">Advance Setting</div>
                     <div id="advanceSetting">
+                        <div id="templateCharSection">
+                            <label for="templateChar">Template Character: </label>
+                            <input type="text" name="templateChar" id="templateChar" value="A" pattern="^\d$" maxlength="1" size="1">
+                        </div>
+                        <div id="alphabetSection">
+                            <div>
+                                <input type="radio" name="alphabet" id="" value="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z">
+                                <label for="templateChar">Use default alphabet</label>
+                            </div>
 
+                            <div>
+                                <input type="radio" name="alphabet" id="" value="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z \s">
+                            <label for="templateChar">Use default alphabet with space</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div id="cipherTextSection">
@@ -43,81 +57,85 @@
     </main>
 
     <script>
-        let tempChar = "x";
-
         document.querySelector("#encrypt").addEventListener("click", () => {
+            console.log( document.querySelector("#alphabetSection input:checked") );
+
             if (
-                document.querySelector("#plainText").value.length > 0 &&
-                document.querySelector("#key").value.length > 0
+                document.querySelector("#templateChar").value.length == 1
             ) {
-                if ( Math.sqrt(document.querySelector("#key").value.length) != Math.round(Math.sqrt(document.querySelector("#key").value.length)) ) {
-                    document.querySelector("#cipherText").value = "Cannot encrypt this plain text using input key"
-                } else {
-                    let s = document.querySelector("#plainText").value.toUpperCase();
-                    while (
-                        s.length % Math.sqrt(document.querySelector("#key").value.length) != 0
-                    ) {
-                        s += tempChar;
+                if (
+                    document.querySelector("#plainText").value.length > 0 &&
+                    document.querySelector("#key").value.length > 0
+                ) {
+                    if ( Math.sqrt(document.querySelector("#key").value.length) != Math.round(Math.sqrt(document.querySelector("#key").value.length)) ) {
+                        document.querySelector("#cipherText").value = "Cannot encrypt this plain text using input key"
+                    } else {
+                        let s = document.querySelector("#plainText").value.toUpperCase();
+                        while (
+                            s.length % Math.sqrt(document.querySelector("#key").value.length) != 0
+                        ) {
+                            s += document.querySelector("#templateChar").value;
+                        }
+                        document.querySelector("#cipherText").value = encryptHill(
+                            s, 
+                            document.querySelector("#key").value.toUpperCase(), 
+                            0
+                        )
                     }
-                    document.querySelector("#cipherText").value = encryptHill(
-                        s, 
-                        document.querySelector("#key").value.toUpperCase(), 
-                        0
-                    )
                 }
+            } else {
+                alert`Please chose 1 template character`
             }
         })
 
         document.querySelector("#decrypt").addEventListener("click", () => {
             if (
-                document.querySelector("#cipherText").value.length > 0 &&
-                document.querySelector("#key").value.length > 0
+                document.querySelector("#templateChar").value.length == 1
             ) {
-                console.log(gcd(
-                        (
-                            LENGTH + getDet(
-                                stringToColumnMatrix(
-                                    document.querySelector("#key").value, 
-                                    Math.sqrt(
-                                        document.querySelector("#key").value.length
-                                    ), 
-                                    0
-                                )
-                            ) % LENGTH
-                        ) % LENGTH, 
-                        LENGTH
-                    ));
                 if (
-                    gcd(
-                        (
-                            LENGTH + getDet(
-                                stringToColumnMatrix(
-                                    document.querySelector("#key").value, 
-                                    Math.sqrt(
-                                        document.querySelector("#key").value.length
-                                    ), 
-                                    0
-                                )
-                            ) % LENGTH
-                        ) % LENGTH, 
-                        LENGTH
-                    ) != 1
+                    document.querySelector("#cipherText").value.length > 0 &&
+                    document.querySelector("#key").value.length > 0
                 ) {
-                    document.querySelector("#plainText").value = "Cannot decrypt this cipher text using input key";
-                } else {
                     if (
-                        document.querySelector("#cipherText").value.length % 
-                        Math.sqrt(document.querySelector("#key").value.length) == 0
+                        gcd(
+                            (
+                                LENGTH + getDet(
+                                    stringToColumnMatrix(
+                                        document.querySelector("#key").value, 
+                                        Math.sqrt(
+                                            document.querySelector("#key").value.length
+                                        ), 
+                                        0
+                                    )
+                                ) % LENGTH
+                            ) % LENGTH, 
+                            LENGTH
+                        ) != 1
                     ) {
-                        document.querySelector("#plainText").value = decryptHill(
-                            document.querySelector("#cipherText").value.toUpperCase(), 
-                            document.querySelector("#key").value.toUpperCase(), 
-                            0
-                        ).replace(new RegExp("\\" + tempChar + "+$", "g"), '');
+                        document.querySelector("#plainText").value = "Cannot decrypt this cipher text using input key";
                     } else {
-                        document.querySelector("#plainText").value = "Cipher text is not valid";
+                        if (
+                            document.querySelector("#cipherText").value.length % 
+                            Math.sqrt(document.querySelector("#key").value.length) == 0
+                        ) {
+                             let decryptValue = decryptHill(
+                                document.querySelector("#cipherText").value.toUpperCase(), 
+                                document.querySelector("#key").value.toUpperCase(), 
+                                0
+                            )
+                            try {
+                                decryptValue.replace(new RegExp("\\" + document.querySelector("#templateChar").value + "+$", "g"), '');
+                                document.querySelector("#plainText").value = decryptValue;
+                            } catch (error) {
+                                alert`This template character does not exist in cipher text`
+                            }
+                        } else {
+                            document.querySelector("#plainText").value = "Cipher text is not valid";
+                        }
                     }
                 }
+            } else {
+                alert`Please chose 1 template character`
             }
         })
 
@@ -126,6 +144,13 @@
         })
         document.querySelector("#cipherTextClear").addEventListener("click", () => {
             document.querySelector("#cipherText").value = "";
+        })
+        document.querySelector("#advanceSettingButton").addEventListener("click", () => {
+            let collapsible = document.querySelector("#advanceSetting");
+            if ( collapsible.style.maxHeight )
+                document.querySelector("#advanceSetting").style.maxHeight = null;
+            else 
+                document.querySelector("#advanceSetting").style.maxHeight = document.querySelector("#advanceSetting").scrollHeight * 2 + 'px';
         })
     </script>
 </body>

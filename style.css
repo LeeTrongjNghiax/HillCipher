@@ -7,17 +7,28 @@
     font-size: 30px;
 }
 
-body {
-    background: #050505;
+body 
+section, 
+#inputSection, 
+.button-list, 
+#plainTextSection, 
+#keySection, 
+#cipherTextSection, 
+#advanceSetting, 
+#templateCharSection, 
+#alphabetSection {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* height: 100vh; */
+}
+
+body {
+    background: #050505;
 }
 
 main {
     width: 100%;
-    padding: 5%;
+    padding: 1%;
 }
 
 h1 {
@@ -26,33 +37,50 @@ h1 {
     margin: 1%;
 }
 
-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+#plainTextSection, 
+#keySection, 
+#cipherTextSection, 
+#advanceSetting, 
+#alphabetSection {
+    flex-direction: column;
 }
 
 #inputSection, .button-list {
     width: 90%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
 }
 
 #keySection {
     flex-basis: 40%;
 }
 
-/* #keySection:hover > #advanceSetting {
-    height: 50vh;
-    transform: height 10s;
-} */
+#advanceSettingButton {
+    width: 90%;
+    margin: 5%;
+    text-decoration: underline;
+    text-align: center;
+}
 
 #advanceSetting {
-    width: 100%;
-    height: 0vh;
-    background: #222;
-    transition: height 1s;
+    width: 90%;
+    overflow: hidden;
+    background: #101010;
+    max-height: 0;
+    transition: max-height 0.2s;
+}
+
+#templateCharSection, 
+#alphabetSection {
+    width: 90%;
+}
+
+#templateCharSection > label, 
+#alphabetSection > label {
+    flex-basis: 90%;
+}
+
+#templateCharSection > input, 
+#alphabetSection > input {
+    flex-basis: 10%;
 }
 
 label {
@@ -63,7 +91,6 @@ textarea, input {
     width: 90%;
     margin: 5% 0;
     background-color: #000;
-    border: 1% solid #eee;
     padding: 1%;
     resize: none;
 }
@@ -81,5 +108,9 @@ button {
 @media (width <= 1100px) {
     #inputSection {
         flex-direction: column;
+        justify-content: center;
+    }
+    #keySection {
+        padding: 1%;
     }
 }
