@@ -17,7 +17,9 @@ section,
 #advanceSetting, 
 #templateCharSection, 
 #alphabetSection, 
-#alphabetSection > div {
+#alphabetSection > div, 
+#caseSection, 
+#caseSection > div {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -38,11 +40,18 @@ h1 {
     margin: 1%;
 }
 
+.labelSection {
+    width: 100%;
+    margin-left: 5%;
+    font-weight: bolder;
+}
+
 #plainTextSection, 
 #keySection, 
 #cipherTextSection, 
 #advanceSetting, 
-#alphabetSection {
+#alphabetSection, 
+#caseSection {
     flex-direction: column;
 }
 
@@ -54,13 +63,6 @@ h1 {
     flex-basis: 40%;
 }
 
-#advanceSettingButton {
-    width: 90%;
-    margin: 5%;
-    text-decoration: underline;
-    text-align: center;
-}
-
 #advanceSetting {
     width: 90%;
     overflow: hidden;
@@ -69,22 +71,34 @@ h1 {
     transition: max-height 0.2s;
 }
 
-#alphabetSection {
+#advanceSettingButton {
+    width: 90%;
+    margin: 5%;
+    text-decoration: underline;
+    text-align: center;
+}
+
+#alphabetSection, 
+#caseSection {
     width: 100%;
 }
 
 #templateCharSection, 
-#alphabetSection > div {
+#alphabetSection > div, 
+#caseSection > div {
     width: 90%;
+    margin: 2% 0;
 }
 
 #templateCharSection > label, 
-#alphabetSection div label {
+#alphabetSection div label, 
+#caseSection div label {
     flex-basis: 90%;
 }
 
 #templateCharSection > input, 
-#alphabetSection div input {
+#alphabetSection div input[type=radio], 
+#caseSection div input {
     flex-basis: 10%;
 }
 

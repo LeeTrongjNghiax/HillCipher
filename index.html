@@ -7,7 +7,8 @@
     <title>Hill Cipher</title>
 
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
+    <script src="eventListener.js" defer></script>
 </head>
 <body>
     <main>
@@ -16,7 +17,7 @@
             <div id="inputSection">
                 <div id="plainTextSection">
                     <label for="plainText">Plain text:</label>
-                    <textarea id="plainText" pattern="^[a-zA-Z]+$" rows="5">SATHISH</textarea>
+                    <textarea id="plainText" pattern="^[a-zA-Z]+$" rows="1">SATHISH</textarea>
                     <div class="button-list">
                         <button id="encrypt">Encrypt!</button>
                         <button id="plainTextClear">Clear</button>
@@ -27,25 +28,43 @@
                     <input type="text" name="key" id="key" pattern="^[a-zA-Z]+$" value="DBGF">
                     <div id="advanceSettingButton">Advance Setting</div>
                     <div id="advanceSetting">
+                        <label for="" class="labelSection">TEMPLATE CHARACTER</label>
                         <div id="templateCharSection">
                             <label for="templateChar">Template Character: </label>
                             <input type="text" name="templateChar" id="templateChar" value="A" pattern="^\d$" maxlength="1" size="1">
                         </div>
+
+                        <label for="" class="labelSection">CASE</label>
+                        <div id="caseSection">
+                            <div>
+                                <input type="checkbox" name="case" id="" value="cs" checked>
+                                <label for="case">Case Insensitive</label>
+                            </div>
+                        </div>
+
+                        <label for="" class="labelSection">ALPHABET</label>
                         <div id="alphabetSection">
                             <div>
                                 <input type="radio" name="alphabet" id="" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ" checked>
-                                <label for="templateChar">Use default alphabet</label>
+                                <label for="alphabet">Use default alphabet (ABCDEFGHIJKLMNOPQRSTUVWXYZ)</label>
                             </div>
                             <div>
                                 <input type="radio" name="alphabet" id="" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ ">
-                                <label for="templateChar">Use default alphabet with space</label>
+                                <label for="alphabet">Use default alphabet with space (ABCDEFGHIJKLMNOPQRSTUVWXYZ )</label>
+                            </div>
+                            <div>
+                                <input type="radio" name="alphabet" id="customAlphabet" value="">
+                                <label for="alphabet">Use custom alphabet</label>
+                            </div>
+                            <div>
+                                <input type="text" name="alphabet" id="customAlphabetInput" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div id="cipherTextSection">
                     <label for="cipherText">Cipher text:</label>
-                    <textarea id="cipherText" pattern="^[a-zA-Z]+$" rows="5"></textarea>
+                    <textarea id="cipherText" pattern="^[a-zA-Z]+$" rows="1"></textarea>
                     <div class="button-list">
                         <button id="decrypt">Decrypt!</button>
                         <button id="cipherTextClear">Clear</button>
@@ -54,111 +73,5 @@
             </div>
         </section>
     </main>
-
-    <script>
-        document.querySelector("#encrypt").addEventListener("click", () => {
-            // console.log( document.querySelector("#alphabetSection input:checked").value.split('') );
-            let arr = document.querySelector("#alphabetSection input:checked");
-            let temp = document.querySelector("#templateChar");
-            let plain = document.querySelector("#plainText");
-            let key = document.querySelector("#key");
-            let cipher = document.querySelector("#cipherText");
-
-            if ( temp.value.length == 1) {
-                if (
-                    plain.value.length > 0 &&
-                    key.value.length > 0
-                ) {
-                    if ( Math.sqrt(key.value.length) != Math.round(Math.sqrt(key.value.length)) ) {
-                        cipher.value = "Cannot encrypt this plain text using input key"
-                    } else {
-                        let s = plain.value.toUpperCase();
-                        while ( s.length % Math.sqrt(key.value.length) != 0) {
-                            s += temp.value;
-                        }
-                        cipher.value = encryptHill(
-                            s, 
-                            key.value.toUpperCase(), 
-                            0, 
-                            arr.value.split('')
-                        )
-                    }
-                }
-            } else {
-                alert`Please chose 1 template character`
-            }
-        })
-
-        document.querySelector("#decrypt").addEventListener("click", () => {
-            let arr = document.querySelector("#alphabetSection input:checked").value.split('');
-            let temp = document.querySelector("#templateChar");
-            let plain = document.querySelector("#plainText");
-            let key = document.querySelector("#key");
-            let cipher = document.querySelector("#cipherText");
-
-            if ( temp.value.length == 1 ) {
-                if (
-                    cipher.value.length > 0 &&
-                    key.value.length > 0
-                ) {
-                    if (
-                        gcd(
-                            (
-                                arr.length + getDet(
-                                    stringToColumnMatrix(
-                                        key.value, 
-                                        Math.sqrt(
-                                            key.value.length
-                                        ), 
-                                        0, 
-                                        arr
-                                    )
-                                ) % arr.length
-                            ) % arr.length, 
-                            arr.length
-                        ) != 1
-                    ) {
-                        plain.value = "Cannot decrypt this cipher text using input key";
-                    } else {
-                        if (
-                            cipher.value.length % 
-                            Math.sqrt(key.value.length) == 0
-                        ) {
-                             let decryptValue = decryptHill(
-                                cipher.value.toUpperCase(), 
-                                key.value.toUpperCase(), 
-                                0, 
-                                arr
-                            )
-                            try {
-                                decryptValue = decryptValue.replace(new RegExp(temp.value + "+$", "g"), '');
-                                plain.value = decryptValue;
-                            } catch (error) {
-                                alert`This template character does not exist in cipher text`
-                            }
-                        } else {
-                            plain.value = "Cipher text is not valid";
-                        }
-                    }
-                }
-            } else {
-                alert`Please chose 1 template character`
-            }
-        })
-
-        document.querySelector("#plainTextClear").addEventListener("click", () => {
-            document.querySelector("#plainText").value = "";
-        })
-        document.querySelector("#cipherTextClear").addEventListener("click", () => {
-            document.querySelector("#cipherText").value = "";
-        })
-        document.querySelector("#advanceSettingButton").addEventListener("click", () => {
-            let collapsible = document.querySelector("#advanceSetting");
-            if ( collapsible.style.maxHeight )
-                document.querySelector("#advanceSetting").style.maxHeight = null;
-            else 
-                document.querySelector("#advanceSetting").style.maxHeight = document.querySelector("#advanceSetting").scrollHeight * 2 + 'px';
-        })
-    </script>
 </body>
 </html>

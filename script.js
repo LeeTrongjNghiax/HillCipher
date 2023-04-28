@@ -3,6 +3,8 @@ multi = (a, b) => a * b;
 mod = (a, b) => a % b;
 mod2 = (a, b) => ((b + a % b) % b);
 
+hasDuplicates = array => (new Set(array)).size !== array.length;
+
 gcd = (a, b) => {
     if (!b) return a;
     return gcd(b, a % b);
@@ -113,7 +115,7 @@ matrixMultiMatrix = (m1, m2) => {
         }
     }
 
-    return m3
+    return m3;
 }
 
 transposeMatrix = matrix => matrix[0].map(
@@ -124,6 +126,7 @@ transposeMatrix = matrix => matrix[0].map(
 
 smallerMatrix = (matrix, i, j) => {
     let matrix2 = [];
+
     matrix.map((row, x) => {
         if (x != i) {
             let rows = [];
@@ -142,6 +145,7 @@ smallerMatrix = (matrix, i, j) => {
 getDet = matrix => {
     if (matrix.length == 1) return matrix[0][0];
     let sum = 0;
+
     for (let i = 0; i < matrix.length; i++) {
         sum += Math.pow(-1, 1 + (i + 1)) * matrix[0][i] * getDet(smallerMatrix(matrix, 0, i));
     }
@@ -171,30 +175,28 @@ inversedMatrix = matrix => {
     )
 }
 
-encryptHill = (p, k, mode = 0, arr) => {
-    return columnMatrixToString(
-        numberBinaryMatrix(
-            arr.length, 
-            matrixMultiMatrix(
-                stringToRowMatrix(
-                    k, 
-                    Math.sqrt(k.length), 
-                    mode, 
-                    arr
-                ),
-                stringToColumnMatrix(
-                    p, 
-                    Math.sqrt(k.length), 
-                    mode, 
-                    arr
-                ), 
+encryptHill = (p, k, mode = 0, arr) => columnMatrixToString(
+    numberBinaryMatrix(
+        arr.length, 
+        matrixMultiMatrix(
+            stringToRowMatrix(
+                k, 
+                Math.sqrt(k.length), 
+                mode, 
+                arr
+            ),
+            stringToColumnMatrix(
+                p, 
+                Math.sqrt(k.length), 
+                mode, 
+                arr
             ), 
-            mod2
         ), 
-        mode, 
-        arr
-    );
-}
+        mod2
+    ), 
+    mode, 
+    arr
+);
 
 decryptHill = (c, k, mode = 0, arr) => rowMatrixToString( 
     transposeMatrix( 
@@ -246,4 +248,117 @@ decryptHill = (c, k, mode = 0, arr) => rowMatrixToString(
     ), 
     mode, 
     arr
-)
+);
+
+function resize() {
+    this.style.height = 0;
+    this.style.height = (this.scrollHeight) + "px";
+}
+
+isValidEncrypt = (p, k, t, a) => {
+    if ( p.length < 1 ) {
+        alert(`Please fill out plain text to encrypt`);
+        return false;
+    }
+
+    if ( k.length < 1 ) {
+        alert(`Please fill out key to encrypt`);
+        return false;
+    }
+
+    if ( !isSquareNumber(k.length) ) {
+        alert(`Key length is not a square number`);
+        return false;
+    }
+
+    if ( t.length != 1 ) {
+        alert(`Please chose 1 template character`);
+        return false;
+    }
+
+    for (let i = 0; i < p.length; i++) {
+        if ( a.indexOf(p[i], 0) == -1 ) {
+            alert(`Your alphabet does not include all of your character in plain text`);
+            return false;
+        }
+    }
+
+    if ( hasDuplicates(a) ) {
+        alert`Your alphabet has duplicate values`;
+        return false;
+    }
+
+    if ( a.indexOf(t, 0) == -1 ) {
+        alert(`Your alphabet does not include template character`);
+        return false;
+    }
+
+    return true;
+}
+
+isValidDecrypt = (c, k, t, a) => {
+    if ( c.length < 1 ) {
+        alert(`Please fill out cipher text to encrypt`);
+        return false;
+    }
+
+    if ( k.length < 1 ) {
+        alert(`Please fill out key to encrypt`);
+        return false;
+    }
+
+    if ( !isSquareNumber(k.length) ) {
+        alert(`Key length is not a square number`);
+        return false;
+    }
+
+    if ( Math.sqrt(k.length) % c.length != 0 && c.length % Math.sqrt(k.length) != 0 ) {
+        alert(`Cipher length is not divisible by key length and vice versa`);
+        return false;
+    }
+
+    if ( t.length != 1 ) {
+        alert(`Please chose 1 template character`);
+        return false;
+    }
+
+    for (let i = 0; i < c.length; i++) {
+        if ( a.indexOf(c[i], 0) == -1 ) {
+            alert(`Your alphabet does not include all of your character in cipher text`);
+            console.log(c[i]);
+            return false;
+        }
+    }
+
+    if ( hasDuplicates(a) ) {
+        alert`Your alphabet has duplicate values`;
+        return false;
+    }
+
+    if ( a.indexOf(t, 0) == -1 ) {
+        alert(`Your alphabet does not include template character`);
+        return false;
+    }
+
+    if (
+        gcd(
+            (
+                a.length + getDet(
+                    stringToColumnMatrix(
+                        k, 
+                        Math.sqrt( k.length ), 
+                        0, 
+                        a
+                    )
+                ) % a.length
+            ) 
+            % a.length, 
+            a.length
+        ) != 1
+    ) {
+        alert(`Cannot decrypt this cipher text using input key`);
+        return false;
+    }
+
+    return true;
+}
