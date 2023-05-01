@@ -105,9 +105,10 @@ document.querySelector("#matrixSizeInput").addEventListener("change", () => {
     document.querySelector("#matrixKey").innerHTML = "";
 
     let arr = document.querySelector("#alphabetSection input:checked").value.split('');
-    let size = document.querySelector("#matrixSizeInput").value;
+    let size = Math.floor(document.querySelector("#matrixSizeInput").value);
     let columns = "";
     let inputs = [];
+    let key = "";
 
     for (let i = 0; i < size; i++) {
         for (let j = 0; j < size; j++) {
@@ -116,6 +117,10 @@ document.querySelector("#matrixSizeInput").addEventListener("change", () => {
             input.setAttribute("name", `field${i}${j} index${i * size + j}`);
             input.setAttribute("class", "field");
             input.setAttribute("min", "0");
+            if (i == j) 
+                input.setAttribute("value", "1");
+            else
+                input.setAttribute("value", "0");
 
             if ( arr.indexOf(key[i * size + j], 0) != -1 )
                 input.value = arr.indexOf(key[i * size + j], 0);
@@ -144,7 +149,10 @@ document.querySelector("#matrixSizeInput").addEventListener("change", () => {
             document.querySelector("#key").value = key;
         });
         document.querySelector("#matrixKey").appendChild(inputs[i]);
+        key += arr[ inputs[i].value ];
     }
+
+    document.querySelector("#key").value = key;
 });
 
 document.querySelector("#keyInputSection > #text").addEventListener("click", () => {
