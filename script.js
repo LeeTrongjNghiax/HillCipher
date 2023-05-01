@@ -293,6 +293,7 @@ isValidEncrypt = (p, k, t, a) => {
         return false;
     }
 
+    console.log("multiplicative inverse of 15 modulo 26: " + getBlindResult(19, 1, 26));
     return true;
 }
 
@@ -340,23 +341,91 @@ isValidDecrypt = (c, k, t, a) => {
         return false;
     }
 
+    console.table(stringToColumnMatrix(
+        k, 
+        Math.sqrt( k.length ), 
+        0, 
+        a
+    ));
+    console.log("Det: " + getDet(
+        stringToColumnMatrix(
+            k, 
+            Math.sqrt( k.length ), 
+            0, 
+            a
+        )
+    ));
+    console.log("Alphabet length: " + a.length);
+    console.log("Det modulo Alphabet length (x): " + mod2(
+        getDet(
+            stringToColumnMatrix(
+                k, 
+                Math.sqrt( k.length ), 
+                0, 
+                a
+            )
+        ), 
+        a.length
+    ));
+    console.log("GCD of x and Alphabet length: " + gcd(
+        mod2(
+            getDet(
+                stringToColumnMatrix(
+                    k, 
+                    Math.sqrt( k.length ), 
+                    0, 
+                    a
+                )
+            ), 
+            a.length
+        ), 
+        a.length
+    ));
+    if (getDet(
+        stringToColumnMatrix(
+            k, 
+            Math.sqrt( k.length ), 
+            0, 
+            a
+        )
+    ) == 0) {
+        alert(`Cannot decrypt this cipher text (determinant of key matrix (${getDet(
+            stringToColumnMatrix(
+                k, 
+                Math.sqrt( k.length ), 
+                0, 
+                a
+            )
+        )}) modulo alphabet is 0)`);
+        return false;
+    }
     if (
         gcd(
-            (
-                a.length + getDet(
+            mod2(
+                getDet(
                     stringToColumnMatrix(
                         k, 
                         Math.sqrt( k.length ), 
                         0, 
                         a
                     )
-                ) % a.length
-            ) 
-            % a.length, 
+                ), 
+                a.length
+            ), 
             a.length
         ) != 1
     ) {
-        alert(`Cannot decrypt this cipher text using input key`);
+        alert(`Cannot decrypt this cipher text (greatest common divisor of determinant of key matrix modulo alphabet length (${mod2(
+            getDet(
+                stringToColumnMatrix(
+                    k, 
+                    Math.sqrt( k.length ), 
+                    0, 
+                    a
+                )
+            ), 
+            a.length
+        )}) and alphabet length (${a.length}) is not 1)`);
         return false;
     }
 
