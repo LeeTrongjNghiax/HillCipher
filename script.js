@@ -293,7 +293,6 @@ isValidEncrypt = (p, k, t, a) => {
         return false;
     }
 
-    console.log("multiplicative inverse of 15 modulo 26: " + getBlindResult(19, 1, 26));
     return true;
 }
 
