@@ -29,9 +29,25 @@
                 </div>
                 <div id="keySection">
                     <label for="key">Key:</label>
-                    <input type="text" name="key" id="key" pattern="^[a-zA-Z]+$" value="RRFVSVCCT">
+                    <div id="keyContainer">
+                        <input type="text" name="key" id="key" pattern="^[a-zA-Z]+$" value="RRFVSVCCT" style="display: block;">
+
+                        <div id="matrixKey" style="display: none;">
+                            
+                        </div>
+                        <div id="sizeSection" style="display: none;">
+                            <label for="" class="labelSection">Size: </label>
+                            <input type="number" name="matrixSizeInput" id="matrixSizeInput" value="3" min="0">
+                        </div>
+                    </div>
                     <div id="advanceSettingButton">Advance Setting</div>
                     <div id="advanceSetting">
+                        <label for="" class="labelSection">KEY INPUT</label>
+                        <div id="keyInputSection">
+                            <input type="button" name="keyInput" class="keyInput" id="matrix" value="MATRIX">
+                            <input type="button" name="keyInput" class="keyInput" id="text" value="TEXT">
+                        </div>
+
                         <label for="" class="labelSection">TEMPLATE CHARACTER</label>
                         <div id="templateCharSection">
                             <label for="templateChar">Template Character: </label>

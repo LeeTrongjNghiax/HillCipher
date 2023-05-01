@@ -340,46 +340,46 @@ isValidDecrypt = (c, k, t, a) => {
         return false;
     }
 
-    console.table(stringToColumnMatrix(
-        k, 
-        Math.sqrt( k.length ), 
-        0, 
-        a
-    ));
-    console.log("Det: " + getDet(
-        stringToColumnMatrix(
-            k, 
-            Math.sqrt( k.length ), 
-            0, 
-            a
-        )
-    ));
-    console.log("Alphabet length: " + a.length);
-    console.log("Det modulo Alphabet length (x): " + mod2(
-        getDet(
-            stringToColumnMatrix(
-                k, 
-                Math.sqrt( k.length ), 
-                0, 
-                a
-            )
-        ), 
-        a.length
-    ));
-    console.log("GCD of x and Alphabet length: " + gcd(
-        mod2(
-            getDet(
-                stringToColumnMatrix(
-                    k, 
-                    Math.sqrt( k.length ), 
-                    0, 
-                    a
-                )
-            ), 
-            a.length
-        ), 
-        a.length
-    ));
+    // console.table(stringToColumnMatrix(
+    //     k, 
+    //     Math.sqrt( k.length ), 
+    //     0, 
+    //     a
+    // ));
+    // console.log("Det: " + getDet(
+    //     stringToColumnMatrix(
+    //         k, 
+    //         Math.sqrt( k.length ), 
+    //         0, 
+    //         a
+    //     )
+    // ));
+    // console.log("Alphabet length: " + a.length);
+    // console.log("Det modulo Alphabet length (x): " + mod2(
+    //     getDet(
+    //         stringToColumnMatrix(
+    //             k, 
+    //             Math.sqrt( k.length ), 
+    //             0, 
+    //             a
+    //         )
+    //     ), 
+    //     a.length
+    // ));
+    // console.log("GCD of x and Alphabet length: " + gcd(
+    //     mod2(
+    //         getDet(
+    //             stringToColumnMatrix(
+    //                 k, 
+    //                 Math.sqrt( k.length ), 
+    //                 0, 
+    //                 a
+    //             )
+    //         ), 
+    //         a.length
+    //     ), 
+    //     a.length
+    // ));
     if (getDet(
         stringToColumnMatrix(
             k, 
@@ -424,7 +424,20 @@ isValidDecrypt = (c, k, t, a) => {
                 )
             ), 
             a.length
-        )}) and alphabet length (${a.length}) is not 1)`);
+        )}) and alphabet length (${a.length}) is ${gcd(
+            mod2(
+                getDet(
+                    stringToColumnMatrix(
+                        k, 
+                        Math.sqrt( k.length ), 
+                        0, 
+                        a
+                    )
+                ), 
+                a.length
+            ), 
+            a.length
+        )}, not 1)`);
         return false;
     }
 
