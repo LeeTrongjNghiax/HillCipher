@@ -124,6 +124,10 @@ button {
 #plainTextClear { background: black; }
 #cipherTextClear { background: black; }
 
+#solution {
+    width: 90%;
+}
+
 @media (width <= 1100px) {
     #inputSection {
         flex-direction: column;
