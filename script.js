@@ -10,13 +10,29 @@ gcd = (a, b) => {
     return gcd(b, a % b);
 }
 
-getBlindResult = (a, b, length) => {
-    for (let x = 1; x <= length; x++) {
-        if ((x * a) % length == b) {
-            return x;
-        }
+extendedEuclideanalgorithm = (a, b) => {
+    let r = [a, b]
+    let s = [1, 0]
+    let t = [0, 1];
+    let q = [];
+    let i = 2;
+
+    while ( r[r.length - 1] != 0 ) {
+        q[i - 1] = Math.floor(r[i - 2] / r[i - 1]);
+        r[i] = r[i - 2] - q[i - 1] * r[i - 1];
+        s[i] = s[i - 2] - q[i - 1] * s[i - 1];
+        t[i] = t[i - 2] - q[i - 1] * t[i - 1];
+        i++;
     }
+
+    return {
+        x: s[s.length - 2], 
+        y: t[t.length - 2], 
+        gcd: r[r.length - 2]
+    };
 }
+
+multiplicativeInverse = (a, b) => extendedEuclideanalgorithm(a, b).x + b;
 
 isSquareNumber = num => {
     for (let i = 1; i <= num; i++)
@@ -206,7 +222,7 @@ decryptHill = (c, k, mode = 0, arr) => rowMatrixToString(
                 numberBinaryMatrix(
                     arr.length, 
                     numberBinaryMatrix( 
-                        getBlindResult(
+                        multiplicativeInverse(
                             (arr.length + getDet(
                                 stringToRowMatrix(
                                     k, 
@@ -215,7 +231,7 @@ decryptHill = (c, k, mode = 0, arr) => rowMatrixToString(
                                     arr
                                 )
                             ) % arr.length) % arr.length, 
-                            1, 
+                            
                             arr.length
                         ), 
                         numberBinaryMatrix( 
